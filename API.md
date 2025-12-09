@@ -9,14 +9,33 @@ Production: https://api.cuida.com.br/api
 
 ## Autenticação
 
-A API utiliza autenticação baseada em sessão. Após o login, um cookie de sessão é criado automaticamente.
+A API utiliza autenticação baseada em **sessão com cookies**. Após o login, um cookie chamado `cuida_session` é criado automaticamente e deve ser enviado em todas as requisições autenticadas.
+
+### Fluxo de Autenticação
+
+1. **Registro**: `POST /api/auth/register` - Criar uma nova conta
+2. **Login**: `POST /api/auth/login` - Autenticar e criar sessão
+3. **Requisições autenticadas**: Incluir cookie de sessão automaticamente
+4. **Logout**: `POST /api/auth/logout` - Destruir sessão
 
 ### Headers Necessários
 
 ```
 Content-Type: application/json
 Accept: application/json
+Cookie: cuida_session=<session_cookie> (para rotas autenticadas)
 ```
+
+### Códigos de Erro Comuns
+
+| Código HTTP | Código de Erro | Descrição |
+|-------------|----------------|-----------|
+| 401 | `NOT_AUTHENTICATED` | Usuário não autenticado |
+| 401 | `INVALID_CREDENTIALS` | Email ou senha incorretos |
+| 403 | `USER_INACTIVE` | Conta de usuário está inativa |
+| 409 | `EMAIL_ALREADY_EXISTS` | Email já está cadastrado |
+| 422 | `VALIDATION_ERROR` | Dados inválidos no request |
+| 500 | `INTERNAL_ERROR` | Erro interno do servidor |
 
 ---
 
@@ -37,11 +56,17 @@ POST /api/auth/register
   "email": "joao@example.com",
   "password": "senha123",
   "userType": "professional", // ou "patient"
-  "phoneNumber": "+5511999999999"
+  "phoneNumber": "+5511999999999" // opcional
 }
 ```
 
-**Response (201):**
+**Validação:**
+- `fullName`: mínimo 3 caracteres, máximo 255
+- `email`: formato válido de email
+- `password`: mínimo 8 caracteres
+- `userType`: deve ser "professional" ou "patient"
+
+**Response (201 - Sucesso):**
 ```json
 {
   "message": "Usuário registrado com sucesso",
@@ -52,6 +77,33 @@ POST /api/auth/register
     "userType": "professional",
     "phoneNumber": "+5511999999999",
     "createdAt": "2024-01-01T00:00:00.000Z"
+  }
+}
+```
+
+**Response (409 - Email já existe):**
+```json
+{
+  "error": {
+    "message": "Email já cadastrado",
+    "code": "EMAIL_ALREADY_EXISTS"
+  }
+}
+```
+
+**Response (422 - Erro de validação):**
+```json
+{
+  "error": {
+    "message": "Erro de validação",
+    "code": "VALIDATION_ERROR",
+    "details": [
+      {
+        "field": "email",
+        "message": "The email field must be a valid email address",
+        "rule": "email"
+      }
+    ]
   }
 }
 ```
@@ -70,7 +122,7 @@ POST /api/auth/login
 }
 ```
 
-**Response (200):**
+**Response (200 - Sucesso):**
 ```json
 {
   "message": "Login realizado com sucesso",
@@ -83,16 +135,33 @@ POST /api/auth/login
 }
 ```
 
+**Response (401 - Credenciais inválidas):**
+```json
+{
+  "error": {
+    "message": "Credenciais inválidas",
+    "code": "INVALID_CREDENTIALS"
+  }
+}
+```
+
+**Response (403 - Usuário inativo):**
+```json
+{
+  "error": {
+    "message": "Usuário inativo",
+    "code": "USER_INACTIVE"
+  }
+}
+```
+
 #### Logout
 
 ```http
 POST /api/auth/logout
 ```
 
-**Headers:**
-```
-Authorization: Bearer <session_token>
-```
+**Requer autenticação** (cookie de sessão)
 
 **Response (200):**
 ```json
@@ -101,11 +170,13 @@ Authorization: Bearer <session_token>
 }
 ```
 
-#### Verificar Sessão
+#### Verificar Sessão (Obter Usuário Autenticado)
 
 ```http
 GET /api/auth/me
 ```
+
+**Requer autenticação** (cookie de sessão)
 
 **Response (200):**
 ```json
@@ -114,7 +185,11 @@ GET /api/auth/me
     "id": 1,
     "fullName": "João Silva",
     "email": "joao@example.com",
-    "userType": "professional"
+    "userType": "professional",
+    "phoneNumber": "+5511999999999",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
   }
 }
 ```
