@@ -12,7 +12,8 @@
       "#services/*": ["./app/services/*.ts"],
       "#config/*": ["./config/*.ts"],
       "#database/*": ["./database/*.ts"],
-      "#start/*": ["./start/*.ts"]
+      "#start/*": ["./start/*.ts"],
+      "#tests/*": ["./tests/*.ts"]
     }
   },
   "include": [

@@ -1,5 +1,6 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
+import { extractSessionCookie, registerAndLogin } from '../helpers/auth_helper.js'
 
 test.group('Auth - Register', (group) => {
   group.each.setup(() => testUtils.db().truncate())
@@ -123,24 +124,16 @@ test.group('Auth - Me', (group) => {
   group.each.setup(() => testUtils.db().truncate())
 
   test('should return authenticated user', async ({ client, assert }) => {
-    // Register and login
-    await client.post('/api/auth/register').json({
+    // Register and login using helper
+    const { sessionCookie } = await registerAndLogin(client, {
       fullName: 'Me Test',
       email: 'me@example.com',
       password: 'password123',
       userType: 'professional',
     })
 
-    const loginResponse = await client.post('/api/auth/login').json({
-      email: 'me@example.com',
-      password: 'password123',
-    })
-
     // Get authenticated user info
-    const response = await client.get('/api/auth/me').cookie(
-      'cuida_session',
-      loginResponse.header('set-cookie') || ''
-    )
+    const response = await client.get('/api/auth/me').cookie('cuida_session', sessionCookie)
 
     response.assertStatus(200)
     assert.properties(response.body(), ['user'])
@@ -158,24 +151,16 @@ test.group('Auth - Logout', (group) => {
   group.each.setup(() => testUtils.db().truncate())
 
   test('should logout successfully', async ({ client }) => {
-    // Register and login
-    await client.post('/api/auth/register').json({
+    // Register and login using helper
+    const { sessionCookie } = await registerAndLogin(client, {
       fullName: 'Logout Test',
       email: 'logout@example.com',
       password: 'password123',
       userType: 'patient',
     })
 
-    const loginResponse = await client.post('/api/auth/login').json({
-      email: 'logout@example.com',
-      password: 'password123',
-    })
-
     // Logout
-    const response = await client.post('/api/auth/logout').cookie(
-      'cuida_session',
-      loginResponse.header('set-cookie') || ''
-    )
+    const response = await client.post('/api/auth/logout').cookie('cuida_session', sessionCookie)
 
     response.assertStatus(200)
   })
