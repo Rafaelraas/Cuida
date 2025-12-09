@@ -1,4 +1,7 @@
 import router from '@adonisjs/core/services/router'
+import { middleware } from '#start/kernel'
+
+const AuthController = () => import('#controllers/auth_controller')
 
 // Home route
 router.get('/', async () => {
@@ -14,9 +17,12 @@ router.get('/health', async () => {
   return { status: 'ok', timestamp: new Date().toISOString() }
 })
 
-// API routes will be added here
-// Example structure:
-// router.group(() => {
-//   router.post('/register', [AuthController, 'register'])
-//   router.post('/login', [AuthController, 'login'])
-// }).prefix('/api/auth')
+// Authentication routes
+router
+  .group(() => {
+    router.post('/register', [AuthController, 'register'])
+    router.post('/login', [AuthController, 'login'])
+    router.post('/logout', [AuthController, 'logout']).use(middleware.auth())
+    router.get('/me', [AuthController, 'me']).use(middleware.auth())
+  })
+  .prefix('/api/auth')

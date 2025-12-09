@@ -1,6 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
-import { vine } from '@vinejs/vine'
+import vine from '@vinejs/vine'
 
 /**
  * Controller de Autenticação
@@ -80,7 +80,7 @@ export default class AuthController {
    * 
    * @route POST /api/auth/login
    */
-  async login({ request, response }: HttpContext) {
+  async login({ request, response, auth }: HttpContext) {
     // Validador de login
     const loginSchema = vine.object({
       email: vine.string().email().normalizeEmail(),
@@ -116,8 +116,8 @@ export default class AuthController {
         })
       }
 
-      // TODO: Criar sessão usando auth.login(user)
-      // Isso será implementado quando configurarmos o auth no Sprint 1
+      // Criar sessão
+      await auth.use('web').login(user)
 
       return response.ok({
         message: 'Login realizado com sucesso',
@@ -154,9 +154,9 @@ export default class AuthController {
    * @route POST /api/auth/logout
    * @middleware auth
    */
-  async logout({ response }: HttpContext) {
-    // TODO: Implementar logout usando auth.logout()
-    // Isso será implementado quando configurarmos o auth no Sprint 1
+  async logout({ response, auth }: HttpContext) {
+    // Destruir sessão
+    await auth.use('web').logout()
 
     return response.ok({
       message: 'Logout realizado com sucesso',
@@ -169,13 +169,29 @@ export default class AuthController {
    * @route GET /api/auth/me
    * @middleware auth
    */
-  async me({ response }: HttpContext) {
-    // TODO: Retornar usuário autenticado usando auth.user
-    // Isso será implementado quando configurarmos o auth no Sprint 1
+  async me({ response, auth }: HttpContext) {
+    // Retornar usuário autenticado
+    const user = auth.use('web').user
+
+    if (!user) {
+      return response.unauthorized({
+        error: {
+          message: 'Não autenticado',
+          code: 'NOT_AUTHENTICATED',
+        },
+      })
+    }
 
     return response.ok({
       user: {
-        // Dados do usuário autenticado
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        userType: user.userType,
+        phoneNumber: user.phoneNumber,
+        isActive: user.isActive,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     })
   }

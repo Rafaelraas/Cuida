@@ -1,19 +1,10 @@
 import { defineConfig } from '@adonisjs/core/app'
-import env from '#start/env'
 
-export default defineConfig({
-  appKey: env.get('APP_KEY'),
-  http: {
-    allowMethodSpoofing: false,
-    generateRequestId: false,
-    trustProxy: false,
-    cookie: {
-      domain: '',
-      path: '/',
-      maxAge: '2h',
-      httpOnly: true,
-      secure: false,
-      sameSite: false,
-    },
-  },
-})
+/**
+ * Application configuration
+ * 
+ * AdonisJS 6 uses sensible defaults for most configurations.
+ * This file can be used to override default app settings if needed.
+ * Currently using all defaults.
+ */
+export default defineConfig({})

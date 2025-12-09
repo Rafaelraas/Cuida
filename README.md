@@ -100,11 +100,20 @@ cuida/
 
 ## 🎯 Funcionalidades Implementadas
 
+### Sprint 1: Fundação e Autenticação ✅
 - [x] Setup do projeto AdonisJS
 - [x] Configuração do banco de dados PostgreSQL
 - [x] Modelos de dados (User, Professional, Patient, Booking, Review)
 - [x] Migrações de banco de dados
-- [x] Estrutura de autenticação
+- [x] Sistema de autenticação completo
+  - [x] Registro de usuários (POST /api/auth/register)
+  - [x] Login com sessão (POST /api/auth/login)
+  - [x] Logout (POST /api/auth/logout)
+  - [x] Obter usuário autenticado (GET /api/auth/me)
+  - [x] Middleware de autenticação
+- [x] Ambiente de testes configurado (Japa)
+- [x] Testes de autenticação
+- [x] CI/CD básico (GitHub Actions)
 - [x] Documentação completa
 - [x] Configuração Docker
 
@@ -112,10 +121,11 @@ cuida/
 
 Consulte o arquivo [SPRINTS.md](SPRINTS.md) para ver o plano detalhado de implementação dividido em sprints de 2 semanas.
 
-### Sprint 1 (Próximo)
-- Implementar sistema de autenticação completo
-- API de registro e login
-- Testes unitários
+### Sprint 2 (Próximo)
+- Implementar perfis de profissionais e pacientes
+- CRUD de perfis
+- Validações personalizadas
+- Upload de documentos
 
 ## 🧪 Testes
 

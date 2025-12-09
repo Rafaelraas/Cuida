@@ -21,7 +21,6 @@ export default defineConfig({
   
   providers: [
     () => import('@adonisjs/core/providers/app_provider'),
-    () => import('@adonisjs/core/providers/http_provider'),
     () => import('@adonisjs/core/providers/hash_provider'),
     {
       file: () => import('@adonisjs/core/providers/edge_provider'),
@@ -31,6 +30,7 @@ export default defineConfig({
     () => import('@adonisjs/auth/auth_provider'),
     () => import('@adonisjs/session/session_provider'),
     () => import('@adonisjs/cors/cors_provider'),
+    // Note: http_provider is not needed in AdonisJS 6 - HTTP functionality is built into core
   ],
   
   metaFiles: [

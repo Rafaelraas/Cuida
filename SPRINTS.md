@@ -20,23 +20,23 @@ Este documento detalha o plano de implementação da Plataforma Cuida dividido e
 - [x] Configurar banco de dados PostgreSQL
 - [x] Criar modelos base (User, Professional, Patient)
 - [x] Criar migrações de banco de dados
-- [ ] Configurar ambiente de testes
-- [ ] Configurar CI/CD básico
+- [x] Configurar ambiente de testes
+- [x] Configurar CI/CD básico
 
 #### Semana 2: Autenticação
-- [ ] Implementar registro de usuários
+- [x] Implementar registro de usuários
   - Endpoint: `POST /api/auth/register`
   - Validações de dados
   - Hash de senha
   - Criação de sessão
-- [ ] Implementar login
+- [x] Implementar login
   - Endpoint: `POST /api/auth/login`
   - Autenticação via session
   - Retorno de dados do usuário
-- [ ] Implementar logout
+- [x] Implementar logout
   - Endpoint: `POST /api/auth/logout`
-- [ ] Implementar middleware de autenticação
-- [ ] Testes de autenticação
+- [x] Implementar middleware de autenticação
+- [x] Testes de autenticação
 
 ### Entregáveis
 - API de autenticação funcional
