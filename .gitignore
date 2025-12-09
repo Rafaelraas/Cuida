@@ -1,0 +1,13 @@
+node_modules
+build
+.env
+.adonisrc.json
+tmp
+.DS_Store
+coverage
+*.log
+.vscode
+.idea
+*.swp
+*.swo
+*~
