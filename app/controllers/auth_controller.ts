@@ -94,22 +94,10 @@ export default class AuthController {
         data: request.all(),
       })
 
-      // Buscar usuário
-      const user = await User.findBy('email', email)
+      // Verificar credenciais usando o AuthFinder mixin
+      const user = await User.verifyCredentials(email, password)
 
       if (!user) {
-        return response.unauthorized({
-          error: {
-            message: 'Credenciais inválidas',
-            code: 'INVALID_CREDENTIALS',
-          },
-        })
-      }
-
-      // Verificar senha
-      const isPasswordValid = await user.verify(password)
-
-      if (!isPasswordValid) {
         return response.unauthorized({
           error: {
             message: 'Credenciais inválidas',
