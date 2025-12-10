@@ -285,38 +285,47 @@ GET /api/professionals/search
 GET /api/professionals/:id
 ```
 
+**Autenticação:** Não requerida (endpoint público)
+
 **Response (200):**
 ```json
 {
-  "id": 1,
-  "userId": 1,
-  "specialty": "Fisioterapeuta",
-  "registrationNumber": "CREFITO-12345",
-  "bio": "Especialista em reabilitação...",
-  "hourlyRate": 80.00,
-  "experienceYears": 5,
-  "availableForEmergency": true,
-  "averageRating": 4.5,
-  "totalReviews": 10,
-  "address": "Rua Exemplo, 123",
-  "city": "São Paulo",
-  "state": "SP",
-  "user": {
-    "fullName": "João Silva",
-    "email": "joao@example.com",
-    "phoneNumber": "+5511999999999"
-  },
-  "recentReviews": [
-    {
+  "professional": {
+    "id": 1,
+    "userId": 1,
+    "specialty": "Fisioterapeuta",
+    "registrationNumber": "CREFITO-12345",
+    "bio": "Especialista em reabilitação...",
+    "hourlyRate": 80.00,
+    "experienceYears": 5,
+    "availableForEmergency": true,
+    "address": "Rua Exemplo, 123",
+    "city": "São Paulo",
+    "state": "SP",
+    "zipCode": "01234-567",
+    "latitude": -23.550520,
+    "longitude": -46.633308,
+    "averageRating": 0,
+    "totalReviews": 0,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z",
+    "user": {
       "id": 1,
-      "rating": 5,
-      "comment": "Excelente profissional!",
-      "patient": {
-        "fullName": "Maria Santos"
-      },
-      "createdAt": "2024-01-01T00:00:00.000Z"
+      "fullName": "João Silva",
+      "email": "joao@example.com",
+      "phoneNumber": "+5511999999999"
     }
-  ]
+  }
+}
+```
+
+**Response (404 - Profissional não encontrado):**
+```json
+{
+  "error": {
+    "message": "Profissional não encontrado",
+    "code": "PROFESSIONAL_NOT_FOUND"
+  }
 }
 ```
 
@@ -328,34 +337,92 @@ POST /api/professionals
 
 **Headers:**
 ```
-Authorization: Bearer <session_token>
+Cookie: cuida_session=<session_cookie>
 ```
+
+**Autenticação:** Requerida (middleware auth)
+**Restrição:** Apenas usuários do tipo "professional" podem criar perfis de profissional
 
 **Request Body:**
 ```json
 {
-  "specialty": "Fisioterapeuta",
-  "registrationNumber": "CREFITO-12345",
-  "bio": "Especialista em reabilitação motora...",
-  "hourlyRate": 80.00,
-  "experienceYears": 5,
+  "specialty": "Enfermeiro",
+  "registrationNumber": "COREN-123456",
+  "bio": "Enfermeiro com 10 anos de experiência",
+  "hourlyRate": 50.00,
+  "experienceYears": 10,
   "availableForEmergency": true,
-  "address": "Rua Exemplo, 123",
+  "address": "Rua das Flores, 123",
   "city": "São Paulo",
   "state": "SP",
-  "zipCode": "01234-567"
+  "zipCode": "01234-567",
+  "latitude": -23.550520,
+  "longitude": -46.633308
 }
 ```
+
+**Validação:**
+- `specialty`: obrigatório, mínimo 3 caracteres, máximo 100
+- `registrationNumber`: opcional, máximo 50 caracteres
+- `bio`: opcional, máximo 1000 caracteres
+- `hourlyRate`: opcional, número >= 0
+- `experienceYears`: opcional, número >= 0
+- `availableForEmergency`: opcional, boolean
+- `address`: opcional, máximo 255 caracteres
+- `city`: opcional, máximo 100 caracteres
+- `state`: opcional, máximo 2 caracteres
+- `zipCode`: opcional, máximo 20 caracteres
+- `latitude`: opcional, número
+- `longitude`: opcional, número
 
 **Response (201):**
 ```json
 {
-  "message": "Perfil profissional criado com sucesso",
+  "message": "Perfil de profissional criado com sucesso",
   "professional": {
     "id": 1,
     "userId": 1,
-    "specialty": "Fisioterapeuta",
-    "hourlyRate": 80.00
+    "specialty": "Enfermeiro",
+    "registrationNumber": "COREN-123456",
+    "bio": "Enfermeiro com 10 anos de experiência",
+    "hourlyRate": 50.00,
+    "experienceYears": 10,
+    "availableForEmergency": true,
+    "address": "Rua das Flores, 123",
+    "city": "São Paulo",
+    "state": "SP",
+    "zipCode": "01234-567",
+    "latitude": -23.550520,
+    "longitude": -46.633308,
+    "averageRating": 0,
+    "totalReviews": 0,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "user": {
+      "id": 1,
+      "fullName": "Dr. João Silva",
+      "email": "joao@example.com",
+      "phoneNumber": "(11) 98765-4321"
+    }
+  }
+}
+```
+
+**Response (403 - Tipo de usuário inválido):**
+```json
+{
+  "error": {
+    "message": "Apenas usuários do tipo profissional podem criar perfis de profissional",
+    "code": "INVALID_USER_TYPE"
+  }
+}
+```
+
+**Response (409 - Perfil já existe):**
+```json
+{
+  "error": {
+    "message": "Perfil de profissional já existe para este usuário",
+    "code": "PROFILE_ALREADY_EXISTS"
   }
 }
 ```
@@ -368,26 +435,74 @@ PUT /api/professionals/:id
 
 **Headers:**
 ```
-Authorization: Bearer <session_token>
+Cookie: cuida_session=<session_cookie>
 ```
+
+**Autenticação:** Requerida (middleware auth)
+**Restrição:** Apenas o dono do perfil pode atualizá-lo
 
 **Request Body:**
 ```json
 {
+  "specialty": "Enfermeiro",
   "bio": "Bio atualizada...",
-  "hourlyRate": 90.00,
-  "availableForEmergency": false
+  "hourlyRate": 60.00,
+  "availableForEmergency": false,
+  "city": "Rio de Janeiro"
 }
 ```
+
+**Validação:**
+Todos os campos são opcionais, mas seguem as mesmas regras de validação do endpoint de criação.
 
 **Response (200):**
 ```json
 {
-  "message": "Perfil atualizado com sucesso",
+  "message": "Perfil de profissional atualizado com sucesso",
   "professional": {
     "id": 1,
+    "userId": 1,
+    "specialty": "Enfermeiro",
+    "registrationNumber": "COREN-123456",
     "bio": "Bio atualizada...",
-    "hourlyRate": 90.00
+    "hourlyRate": 60.00,
+    "experienceYears": 10,
+    "availableForEmergency": false,
+    "address": "Rua das Flores, 123",
+    "city": "Rio de Janeiro",
+    "state": "SP",
+    "zipCode": "01234-567",
+    "latitude": -23.550520,
+    "longitude": -46.633308,
+    "averageRating": 0,
+    "totalReviews": 0,
+    "updatedAt": "2024-01-02T00:00:00.000Z",
+    "user": {
+      "id": 1,
+      "fullName": "Dr. João Silva",
+      "email": "joao@example.com",
+      "phoneNumber": "(11) 98765-4321"
+    }
+  }
+}
+```
+
+**Response (403 - Sem permissão):**
+```json
+{
+  "error": {
+    "message": "Você não tem permissão para atualizar este perfil",
+    "code": "FORBIDDEN"
+  }
+}
+```
+
+**Response (404 - Profissional não encontrado):**
+```json
+{
+  "error": {
+    "message": "Profissional não encontrado",
+    "code": "PROFESSIONAL_NOT_FOUND"
   }
 }
 ```
@@ -404,22 +519,40 @@ POST /api/patients
 
 **Headers:**
 ```
-Authorization: Bearer <session_token>
+Cookie: cuida_session=<session_cookie>
 ```
+
+**Autenticação:** Requerida (middleware auth)
+**Restrição:** Apenas usuários do tipo "patient" podem criar perfis de paciente
 
 **Request Body:**
 ```json
 {
-  "dateOfBirth": "1990-01-01",
-  "address": "Rua Exemplo, 456",
+  "dateOfBirth": "1950-05-15",
+  "address": "Rua das Flores, 123",
   "city": "São Paulo",
   "state": "SP",
   "zipCode": "01234-567",
+  "latitude": -23.550520,
+  "longitude": -46.633308,
   "emergencyContactName": "Maria Silva",
-  "emergencyContactPhone": "+5511888888888",
-  "medicalConditions": "Diabetes tipo 2"
+  "emergencyContactPhone": "(11) 98765-4321",
+  "medicalConditions": "Diabetes, Hipertensão"
 }
 ```
+
+**Validação:**
+Todos os campos são opcionais:
+- `dateOfBirth`: data válida
+- `address`: máximo 255 caracteres
+- `city`: máximo 100 caracteres
+- `state`: máximo 2 caracteres
+- `zipCode`: máximo 20 caracteres
+- `latitude`: número
+- `longitude`: número
+- `emergencyContactName`: máximo 255 caracteres
+- `emergencyContactPhone`: máximo 20 caracteres
+- `medicalConditions`: máximo 2000 caracteres
 
 **Response (201):**
 ```json
@@ -428,7 +561,43 @@ Authorization: Bearer <session_token>
   "patient": {
     "id": 1,
     "userId": 2,
-    "city": "São Paulo"
+    "dateOfBirth": "1950-05-15T00:00:00.000Z",
+    "address": "Rua das Flores, 123",
+    "city": "São Paulo",
+    "state": "SP",
+    "zipCode": "01234-567",
+    "latitude": -23.550520,
+    "longitude": -46.633308,
+    "emergencyContactName": "Maria Silva",
+    "emergencyContactPhone": "(11) 98765-4321",
+    "medicalConditions": "Diabetes, Hipertensão",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "user": {
+      "id": 2,
+      "fullName": "João Silva",
+      "email": "joao@example.com",
+      "phoneNumber": "(11) 91234-5678"
+    }
+  }
+}
+```
+
+**Response (403 - Tipo de usuário inválido):**
+```json
+{
+  "error": {
+    "message": "Apenas usuários do tipo paciente podem criar perfis de paciente",
+    "code": "INVALID_USER_TYPE"
+  }
+}
+```
+
+**Response (409 - Perfil já existe):**
+```json
+{
+  "error": {
+    "message": "Perfil de paciente já existe para este usuário",
+    "code": "PROFILE_ALREADY_EXISTS"
   }
 }
 ```
@@ -441,24 +610,130 @@ GET /api/patients/:id
 
 **Headers:**
 ```
-Authorization: Bearer <session_token>
+Cookie: cuida_session=<session_cookie>
 ```
+
+**Autenticação:** Requerida (middleware auth)
+**Restrição:** Apenas o próprio paciente ou profissionais podem visualizar o perfil
 
 **Response (200):**
 ```json
 {
-  "id": 1,
-  "userId": 2,
-  "dateOfBirth": "1990-01-01",
-  "address": "Rua Exemplo, 456",
-  "city": "São Paulo",
-  "state": "SP",
-  "emergencyContactName": "Maria Silva",
-  "emergencyContactPhone": "+5511888888888",
-  "user": {
-    "fullName": "Pedro Santos",
-    "email": "pedro@example.com",
-    "phoneNumber": "+5511777777777"
+  "patient": {
+    "id": 1,
+    "userId": 2,
+    "dateOfBirth": "1950-05-15T00:00:00.000Z",
+    "address": "Rua das Flores, 123",
+    "city": "São Paulo",
+    "state": "SP",
+    "zipCode": "01234-567",
+    "latitude": -23.550520,
+    "longitude": -46.633308,
+    "emergencyContactName": "Maria Silva",
+    "emergencyContactPhone": "(11) 98765-4321",
+    "medicalConditions": "Diabetes, Hipertensão",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z",
+    "user": {
+      "id": 2,
+      "fullName": "Pedro Santos",
+      "email": "pedro@example.com",
+      "phoneNumber": "+5511777777777"
+    }
+  }
+}
+```
+
+**Response (403 - Sem permissão):**
+```json
+{
+  "error": {
+    "message": "Você não tem permissão para visualizar este perfil",
+    "code": "FORBIDDEN"
+  }
+}
+```
+
+**Response (404 - Paciente não encontrado):**
+```json
+{
+  "error": {
+    "message": "Paciente não encontrado",
+    "code": "PATIENT_NOT_FOUND"
+  }
+}
+```
+
+#### Atualizar Perfil de Paciente
+
+```http
+PUT /api/patients/:id
+```
+
+**Headers:**
+```
+Cookie: cuida_session=<session_cookie>
+```
+
+**Autenticação:** Requerida (middleware auth)
+**Restrição:** Apenas o dono do perfil pode atualizá-lo
+
+**Request Body:**
+```json
+{
+  "emergencyContactName": "Novo Contato",
+  "city": "Rio de Janeiro",
+  "medicalConditions": "Condições atualizadas"
+}
+```
+
+**Validação:**
+Todos os campos são opcionais, mas seguem as mesmas regras de validação do endpoint de criação.
+
+**Response (200):**
+```json
+{
+  "message": "Perfil de paciente atualizado com sucesso",
+  "patient": {
+    "id": 1,
+    "userId": 2,
+    "dateOfBirth": "1950-05-15T00:00:00.000Z",
+    "address": "Rua das Flores, 123",
+    "city": "Rio de Janeiro",
+    "state": "SP",
+    "zipCode": "01234-567",
+    "latitude": -23.550520,
+    "longitude": -46.633308,
+    "emergencyContactName": "Novo Contato",
+    "emergencyContactPhone": "(11) 98765-4321",
+    "medicalConditions": "Condições atualizadas",
+    "updatedAt": "2024-01-02T00:00:00.000Z",
+    "user": {
+      "id": 2,
+      "fullName": "Pedro Santos",
+      "email": "pedro@example.com",
+      "phoneNumber": "+5511777777777"
+    }
+  }
+}
+```
+
+**Response (403 - Sem permissão):**
+```json
+{
+  "error": {
+    "message": "Você não tem permissão para atualizar este perfil",
+    "code": "FORBIDDEN"
+  }
+}
+```
+
+**Response (404 - Paciente não encontrado):**
+```json
+{
+  "error": {
+    "message": "Paciente não encontrado",
+    "code": "PATIENT_NOT_FOUND"
   }
 }
 ```

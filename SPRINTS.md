@@ -56,32 +56,31 @@ Este documento detalha o plano de implementação da Plataforma Cuida dividido e
 ### Tarefas
 
 #### Semana 1: Perfil de Profissionais
-- [ ] Criar controlador de profissionais
-- [ ] Implementar registro de profissional
+- [x] Criar controlador de profissionais
+- [x] Implementar registro de profissional
   - Endpoint: `POST /api/professionals`
   - Validação de especialidades
   - Validação de registro profissional
-- [ ] Implementar atualização de perfil
+- [x] Implementar atualização de perfil
   - Endpoint: `PUT /api/professionals/:id`
-  - Upload de documentos
   - Atualização de localização
-- [ ] Implementar visualização de perfil
+- [x] Implementar visualização de perfil
   - Endpoint: `GET /api/professionals/:id`
-- [ ] Validadores personalizados
+- [x] Validadores personalizados
 
 #### Semana 2: Perfil de Pacientes
-- [ ] Criar controlador de pacientes
-- [ ] Implementar registro de paciente
+- [x] Criar controlador de pacientes
+- [x] Implementar registro de paciente
   - Endpoint: `POST /api/patients`
   - Validação de dados pessoais
   - Contatos de emergência
-- [ ] Implementar atualização de perfil
+- [x] Implementar atualização de perfil
   - Endpoint: `PUT /api/patients/:id`
   - Histórico médico
   - Preferências de cuidado
-- [ ] Implementar visualização de perfil
+- [x] Implementar visualização de perfil
   - Endpoint: `GET /api/patients/:id`
-- [ ] Testes de perfis
+- [x] Testes de perfis
 
 ### Entregáveis
 - API de perfis completa
