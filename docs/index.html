@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cuida - Plataforma de cuidados a domicílio conectando profissionais de saúde com pessoas que precisam de cuidado">
+    <title>Cuida - Documentação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary-color: #10b981;
+            --background: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--background);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header .emoji {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .intro {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .intro h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+
+        .intro p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: color 0.2s;
+        }
+
+        .card a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .badge.success {
+            background: var(--secondary-color);
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .features-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .features-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="emoji">🏥</span>
+        <h1>Cuida</h1>
+        <p>Plataforma de cuidados a domicílio - Conectando profissionais de saúde com pessoas que precisam de cuidado</p>
+    </div>
+
+    <div class="container">
+        <div class="intro">
+            <h2>Bem-vindo à Documentação</h2>
+            <p>
+                Cuida é uma plataforma fullstack desenvolvida com AdonisJS que facilita a conexão entre 
+                profissionais de saúde (cuidadores, fisioterapeutas, enfermeiros, terapeutas) e pessoas 
+                que necessitam de cuidados domiciliares (idosos, acamados, pacientes em recuperação).
+            </p>
+        </div>
+
+        <div class="badges">
+            <span class="badge">AdonisJS 6.x</span>
+            <span class="badge">TypeScript</span>
+            <span class="badge">PostgreSQL</span>
+            <span class="badge success">Sprint 1 ✓</span>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem; color: var(--text-primary);">📚 Documentação</h2>
+
+        <div class="cards-grid">
+            <div class="card">
+                <h3><span class="icon">🚀</span> Início Rápido</h3>
+                <p>Aprenda a configurar e executar o projeto localmente em minutos.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/QUICKSTART.md" target="_blank">Ler Guia →</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">⚙️</span> Setup Completo</h3>
+                <p>Instruções detalhadas de instalação, configuração e deploy.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/SETUP.md" target="_blank">Ver Setup →</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🏗️</span> Arquitetura</h3>
+                <p>Entenda a estrutura do projeto, padrões e decisões técnicas.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/ARCHITECTURE.md" target="_blank">Ver Arquitetura →</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🔌</span> API REST</h3>
+                <p>Documentação completa de todos os endpoints da API.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/API.md" target="_blank">Ver API Docs →</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">📅</span> Plano de Sprints</h3>
+                <p>Roadmap de desenvolvimento dividido em sprints de 2 semanas.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/SPRINTS.md" target="_blank">Ver Sprints →</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🎯</span> Começar a Usar</h3>
+                <p>Guia passo a passo para começar a usar a plataforma.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/GETTING_STARTED.md" target="_blank">Começar →</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">🤝</span> Contribuir</h3>
+                <p>Como contribuir para o projeto e guidelines de desenvolvimento.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/CONTRIBUTING.md" target="_blank">Contribuir →</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">📊</span> Status do Deploy</h3>
+                <p>Status atual da implementação e próximos passos.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/DEPLOYMENT_STATUS.md" target="_blank">Ver Status →</a>
+            </div>
+
+            <div class="card">
+                <h3><span class="icon">📝</span> Changelog</h3>
+                <p>Histórico de mudanças e versões do projeto.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/CHANGELOG.md" target="_blank">Ver Changelog →</a>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem; color: var(--text-primary); margin-top: 3rem;">✨ Características Principais</h2>
+
+        <div class="cards-grid">
+            <div class="card">
+                <h3>🌍 Busca por Geolocalização</h3>
+                <p>Encontre profissionais próximos à sua localização usando coordenadas GPS.</p>
+            </div>
+
+            <div class="card">
+                <h3>⭐ Sistema de Avaliações</h3>
+                <p>Veja avaliações e recomendações de outros usuários antes de agendar.</p>
+            </div>
+
+            <div class="card">
+                <h3>📅 Agendamento Online</h3>
+                <p>Agende consultas e serviços de forma fácil e rápida pela plataforma.</p>
+            </div>
+
+            <div class="card">
+                <h3>👤 Perfis Detalhados</h3>
+                <p>Informações completas sobre especialidades, preços e experiência.</p>
+            </div>
+
+            <div class="card">
+                <h3>🔒 Seguro e Confiável</h3>
+                <p>Sistema de autenticação robusto e validação de profissionais.</p>
+            </div>
+
+            <div class="card">
+                <h3>🧪 Testes Automatizados</h3>
+                <p>Cobertura de testes com Japa para garantir qualidade do código.</p>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem; color: var(--text-primary); margin-top: 3rem;">🛠️ Tecnologias</h2>
+
+        <div class="intro">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Backend</h3>
+            <ul class="features-list">
+                <li><strong>AdonisJS 6.x</strong> - Framework Node.js robusto e elegante</li>
+                <li><strong>TypeScript</strong> - Tipagem estática para JavaScript</li>
+                <li><strong>PostgreSQL</strong> - Banco de dados relacional</li>
+                <li><strong>Lucid ORM</strong> - ORM incluído no AdonisJS</li>
+                <li><strong>VineJS</strong> - Validação de dados</li>
+                <li><strong>Session Auth</strong> - Autenticação baseada em sessão</li>
+            </ul>
+
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem; margin-top: 1.5rem;">DevOps & Testing</h3>
+            <ul class="features-list">
+                <li><strong>Docker</strong> - Containerização da aplicação</li>
+                <li><strong>GitHub Actions</strong> - CI/CD automatizado</li>
+                <li><strong>Japa</strong> - Framework de testes</li>
+                <li><strong>ESLint</strong> - Linting de código</li>
+                <li><strong>Prettier</strong> - Formatação de código</li>
+            </ul>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem; color: var(--text-primary); margin-top: 3rem;">📦 Links Rápidos</h2>
+
+        <div class="cards-grid">
+            <div class="card">
+                <h3>🐙 GitHub</h3>
+                <p>Código fonte e issues do projeto.</p>
+                <a href="https://github.com/Rafaelraas/Cuida" target="_blank">Ver Repositório →</a>
+            </div>
+
+            <div class="card">
+                <h3>📖 README</h3>
+                <p>Visão geral do projeto e instruções básicas.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/README.md" target="_blank">Ler README →</a>
+            </div>
+
+            <div class="card">
+                <h3>📄 Licença</h3>
+                <p>Informações sobre a licença MIT do projeto.</p>
+                <a href="https://github.com/Rafaelraas/Cuida/blob/main/LICENSE" target="_blank">Ver Licença →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>
+            Feito com ❤️ para melhorar o acesso a cuidados de saúde domiciliares no Brasil
+        </p>
+        <p style="margin-top: 1rem;">
+            <a href="https://github.com/Rafaelraas" target="_blank">Rafael Raas</a> © 2024
+        </p>
+    </div>
+</body>
+</html>

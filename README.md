@@ -74,6 +74,8 @@ docker-compose exec app node ace migration:run
 
 ## 📚 Documentação
 
+**[🌐 Documentação Online](https://rafaelraas.github.io/Cuida/)** - Site completo da documentação
+
 - **[Guia de Setup](SETUP.md)** - Instruções detalhadas de instalação e configuração
 - **[Plano de Sprints](SPRINTS.md)** - Roadmap de desenvolvimento dividido em sprints
 - **[Arquitetura](ARCHITECTURE.md)** - Documentação da arquitetura do sistema
