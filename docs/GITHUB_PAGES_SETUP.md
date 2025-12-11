@@ -28,7 +28,7 @@ Na página de configurações do Pages:
 
 ### 3. Fazer Merge da Branch
 
-1. Faça merge da branch `copilot/prepare-gh-pages` para `main`
+1. Faça merge da branch que contém estas alterações para `main`
 2. Ou faça push diretamente para `main` se estiver trabalhando nela
 
 ### 4. Verificar Deploy
