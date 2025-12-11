@@ -1,5 +1,9 @@
 # Cuida 🏥
 
+[![CI](https://github.com/Rafaelraas/Cuida/actions/workflows/ci.yml/badge.svg)](https://github.com/Rafaelraas/Cuida/actions/workflows/ci.yml)
+[![GitHub Pages](https://github.com/Rafaelraas/Cuida/actions/workflows/deploy-gh-pages.yml/badge.svg)](https://github.com/Rafaelraas/Cuida/actions/workflows/deploy-gh-pages.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 > Plataforma de cuidados a domicílio - Conectando profissionais de saúde com pessoas que precisam de cuidado
 
 Cuida é uma plataforma fullstack desenvolvida com AdonisJS que facilita a conexão entre profissionais de saúde (cuidadores, fisioterapeutas, enfermeiros, terapeutas) e pessoas que necessitam de cuidados domiciliares (idosos, acamados, pacientes em recuperação).
